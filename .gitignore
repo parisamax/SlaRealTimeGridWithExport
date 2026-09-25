@@ -1,0 +1,35 @@
+﻿# Node dependencies
+**/node_modules/
+
+# PCF build output
+**/out/
+**/generated/
+
+# Dataverse solution build output
+**/bin/
+**/obj/
+
+# Locally generated packages
+artifacts/
+*.zip
+*.backup
+
+# Visual Studio and VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Environment and secret files
+.env
+.env.*
+*.pfx
+*.key
+
+# Operating system files
+.DS_Store
+Thumbs.db
