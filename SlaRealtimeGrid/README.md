@@ -24,6 +24,13 @@ configurable SLA stages, together with filtering, paging and Excel export.
 The control uses only standard Dataverse tables and columns. It does not call
 external services.
 
+This control does not include or create SLA definitions, SLA Items, or SLA KPI
+Instance data. The target Dataverse environment must already have its own SLA
+configuration.
+
+After installing the control, configure the dataset properties and view columns
+according to the SLA setup of the target organization.
+
 ## Control properties
 
 | Property | Description | Default |
