@@ -31,21 +31,102 @@ configuration.
 After installing the control, configure the dataset properties and view columns
 according to the SLA setup of the target organization.
 
-## Control properties
+## Install the solution
 
-| Property | Description | Default |
+1. Download `SlaRealTimeGridWithExport-managed.zip` from the latest
+   [GitHub release](https://github.com/parisamax/SlaRealTimeGridWithExport/releases/latest).
+2. Sign in to [Power Apps](https://make.powerapps.com/) and select the target
+   Dataverse environment.
+3. Open **Solutions** and select **Import solution**.
+4. Upload `SlaRealTimeGridWithExport-managed.zip`.
+5. Complete the import and publish all customizations.
+
+The managed solution installs only the PCF control. It does not create SLA
+definitions, SLA Items, views, security roles, or organization-specific data.
+
+## Apply the control to a Case view
+
+### 1. Create or select a Case view
+
+Create or use a public/system view for the Case (`incident`) table.
+
+Personal views are not recommended because the control uses the Dataverse
+system view definition when loading and filtering records across all pages.
+
+The filters configured on the Case view determine which Cases are available
+to the control.
+
+### 2. Add the required Case columns
+
+The Case view should include the following columns:
+
+- Case Number (`ticketnumber`)
+- Title (`title`)
+- Priority (`prioritycode`)
+- Owner (`ownerid`)
+
+The control retrieves SLA KPI Instance and SLA Item information separately
+through the Dataverse Web API, so SLA KPI columns don't need to be added to
+the Case view.
+
+### 3. Add the view to an unmanaged configuration solution
+
+The installed PCF solution is managed and should not be modified directly.
+
+1. Create or open an unmanaged solution in the target environment.
+2. Add the Case table to the solution.
+3. Include the system view where the control will be used.
+4. Open the Case table in the solution.
+
+### 4. Configure the control on a specific view
+
+The exact designer options can vary between Power Apps environments. If the
+modern view designer provides a **Custom controls** or **Components** option,
+you can select the control there.
+
+The documented classic solution explorer procedure is:
+
+1. Open the unmanaged configuration solution.
+2. Select **Switch to classic** or open the classic solution explorer.
+3. Expand **Entities** and then select **Case**.
+4. Select **Views**.
+5. Open the system view where the control should appear.
+6. Select **Custom Controls** from the right-hand menu.
+7. Select **Add Control**.
+8. Select **SLA Real-Time Grid** and then select **Add**.
+9. Enable the control for **Web**. Enable Phone or Tablet only after testing
+   the control on those clients.
+10. If prompted for the dataset, bind `Cases` to the current view dataset.
+11. Configure the control properties.
+12. Select **OK**, then **Save and Close**.
+13. Select **Publish All Customizations**.
+
+### 5. Configure the control properties
+
+| Property | Example | Description |
 | --- | --- | --- |
-| `Cases` | Dataset bound to a Case view | Required |
-| `FirstStageSlaItemName` | Exact Dataverse SLA Item name for the first stage | `First Response` |
-| `ResolutionSlaItemName` | Exact Dataverse SLA Item name for resolution | `Resolution` |
-| `FirstStageLabel` | Label shown for the first-stage columns and export | `First Response` |
-| `GridTitle` | Title above the agent grid | `SLA REAL-TIME GRID` |
-| `GridSubtitle` | Subtitle above the agent grid | `Real-time view of Case SLA performance` |
-| `LayoutMode` | Use `admin` for the summary layout; any other value uses the agent layout | `agent` |
-| `EnableNegativeTimer` | Shows elapsed time as a negative value after breach | `true` |
+| `Cases` | Current Case view dataset | Dataset displayed by the control |
+| `FirstStageSlaItemName` | `First Response` | Exact name of the first-stage SLA Item |
+| `ResolutionSlaItemName` | `Resolution` | Exact name of the resolution SLA Item |
+| `FirstStageLabel` | `First Response` | Label displayed for the first SLA stage |
+| `GridTitle` | `CUSTOMER SUPPORT SLA` | Optional title above the grid |
+| `GridSubtitle` | `Real-time SLA monitoring for active Cases` | Optional subtitle |
+| `LayoutMode` | `agent` | Use `admin` for summary cards or `agent` for the standard grid |
+| `EnableNegativeTimer` | `Yes` | Shows elapsed time as a negative value after an SLA breach |
 
-SLA Item name comparisons are case-insensitive but otherwise must match the
-names configured in Dataverse.
+`FirstStageSlaItemName` and `ResolutionSlaItemName` must match the Dataverse
+SLA Item names exactly. Comparisons are case-insensitive, but otherwise the
+names must be identical.
+
+For example, if the target organization uses an SLA Item named
+`First Handling`, configure:
+
+```text
+FirstStageSlaItemName = First Handling
+FirstStageLabel = First Handling
+
+
+
 
 ## Build
 
